@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="./css/style.css" />
 
     <!-- VUE JS -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
 
     <!-- APP JS -->
     <script type="text/javascript" src="./js/app.js" defer></script>
@@ -83,12 +83,14 @@
         <!-- LIST CONTACTS -->
         <ul class="list-contacts flex-grow-1 m-0 p-0">
           <li
-            v-for="contact in contacts"
+            v-for="(contact, contactIndex) in contacts"
             class="list-contacts--contact contact--active d-flex p-2"
+            :class="contactIndex == activeContact ? 'contact--active' : ''"
+            @click="activeContact = contactIndex"
           >
             <div class="contact--left d-flex flex-grow-1">
               <img
-                :src="'img/avatar' + constact.avatar"
+                :src="'img/avatar' + contact.avatar + '.jpg'"
                 class="avatar"
                 alt=""
               />
@@ -113,10 +115,16 @@
         <!-- HEADER CHAT COL -->
         <header class="contacts-col--header d-flex justify-content-between p-2">
           <div class="d-flex align-items-center">
-            <img src="./img/avatar_1.jpg" class="avatar" alt="" />
+            <img
+              :src="'img/avatar' + contacts[activeContact].avatar + '.jpg'"
+              class="avatar"
+              alt=""
+            />
             <p class="my-0 mx-2">
-              Michele<br />
-              <span class="latest-access">Ultimo accesso ore 12:00</span>
+              {{contacts[activeContact].name}}<br />
+              <span class="latest-access"
+                >{{contacts[activeContact].date}}</span
+              >
             </p>
           </div>
           <div class="d-flex align-items-center icons">
@@ -128,94 +136,13 @@
 
         <!-- MAIN CHAT -->
         <div class="main-chat flex-grow-1 d-flex flex-column align-items-start">
-          <div class="message received p-2 m-2">
-            <p class="p-0 m-0">
-              Hai portato a spasso il cane?Hai portato a spasso il cane?Hai
-              portato a spasso il cane?Hai portato a spasso il cane? Hai portato
-              a spasso il cane?Hai portato a spasso il cane?Hai portato a spasso
-              il cane?
-            </p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message received p-2 m-2">
-            <p class="p-0 m-0">Hai portato a spasso il cane?</p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message sent p-2 m-2">
-            <p class="p-0 m-0">Ok.</p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message sent p-2 m-2">
-            <p class="p-0 m-0">
-              Hai portato a spasso il cane?Hai portato a spasso il cane?Hai
-              portato a spasso il cane?Hai portato a spasso il cane? Hai portato
-              a spasso il cane?Hai portato a spasso il cane?Hai portato a spasso
-              il cane?
-            </p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message sent p-2 m-2">
-            <p class="p-0 m-0">
-              Hai portato a spasso il cane?Hai portato a spasso il cane?Hai
-              portato a spasso il cane?Hai portato a spasso il cane? Hai portato
-              a spasso il cane?Hai portato a spasso il cane?Hai portato a spasso
-              il cane?
-            </p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message sent p-2 m-2">
-            <p class="p-0 m-0">
-              Hai portato a spasso il cane?Hai portato a spasso il cane?Hai
-              portato a spasso il cane?Hai portato a spasso il cane? Hai portato
-              a spasso il cane?Hai portato a spasso il cane?Hai portato a spasso
-              il cane?
-            </p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message sent p-2 m-2">
-            <p class="p-0 m-0">
-              Hai portato a spasso il cane?Hai portato a spasso il cane?Hai
-              portato a spasso il cane?Hai portato a spasso il cane? Hai portato
-              a spasso il cane?Hai portato a spasso il cane?Hai portato a spasso
-              il cane?
-            </p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message sent p-2 m-2">
-            <p class="p-0 m-0">
-              Hai portato a spasso il cane?Hai portato a spasso il cane?Hai
-              portato a spasso il cane?Hai portato a spasso il cane? Hai portato
-              a spasso il cane?Hai portato a spasso il cane?Hai portato a spasso
-              il cane?
-            </p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message sent p-2 m-2">
-            <p class="p-0 m-0">
-              Hai portato a spasso il cane?Hai portato a spasso il cane?Hai
-              portato a spasso il cane?Hai portato a spasso il cane? Hai portato
-              a spasso il cane?Hai portato a spasso il cane?Hai portato a spasso
-              il cane?
-            </p>
-            <small class="message-date">15:30</small>
-          </div>
-
-          <div class="message sent p-2 m-2">
-            <p class="p-0 m-0">
-              Hai portato a spasso il cane?Hai portato a spasso il cane?Hai
-              portato a spasso il cane?Hai portato a spasso il cane? Hai portato
-              a spasso il cane?Hai portato a spasso il cane?Hai portato a spasso
-              il cane?
-            </p>
-            <small class="message-date">15:30</small>
+          <div
+            v-for="message in contacts[activeContact].messages"
+            class="message received p-2 m-2"
+            :class="message.status"
+          >
+            <p class="p-0 m-0">{{message.message}}</p>
+            <small class="message-date"> {{message.date}} </small>
           </div>
         </div>
 
