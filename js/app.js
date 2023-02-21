@@ -168,7 +168,42 @@ const app = createApp({
       ],
 
       activeContact: 0,
+
+      newMessage: {
+        text: "",
+        status: "sent",
+      },
+
+      lettersName: "",
     };
+  },
+
+  methods: {
+    sendMessage() {
+      this.contacts[this.activeContact].messages.push({
+        message: this.newMessage.text,
+        status: this.newMessage.status,
+      });
+
+      setTimeout(() => {
+        this.contacts[this.activeContact].messages.push({
+          message: "ok",
+          status: "received",
+        });
+      }, 1000);
+    },
+
+    searchUser() {
+      this.contacts.forEach((contact) => {
+        if (
+          contact.name.toLowerCase().includes(this.lettersName.toLowerCase())
+        ) {
+          contact.visible = true;
+        } else {
+          contact.visible = false;
+        }
+      });
+    },
   },
 });
 

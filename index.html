@@ -76,6 +76,8 @@
           <input
             class="p-2"
             type="text"
+            @keyUp="searchUser()"
+            v-model="lettersName"
             placeholder="Cerca o inizia una nuova chat"
           />
         </div>
@@ -84,9 +86,10 @@
         <ul class="list-contacts flex-grow-1 m-0 p-0">
           <li
             v-for="(contact, contactIndex) in contacts"
+            v-show="contact.visible"
+            @click="activeContact = contactIndex"
             class="list-contacts--contact contact--active d-flex p-2"
             :class="contactIndex == activeContact ? 'contact--active' : ''"
-            @click="activeContact = contactIndex"
           >
             <div class="contact--left d-flex flex-grow-1">
               <img
@@ -156,6 +159,8 @@
               type="text"
               placeholder="Scrivi un messaggio"
               class="send-message-input px-4 p-2"
+              @keyUp.enter="sendMessage()"
+              v-model="newMessage.text"
             />
           </div>
           <div class="d-flex align-items-center icons px-4 py-2">
